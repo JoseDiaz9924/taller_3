@@ -19,11 +19,14 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install nbconvert
+          pip install nbconvert jupyter ipykernel
+
+          python -m ipykernel install --user --name python3 --display-name "Python 3"
 
       - name: Train model
-        run: jupyter nbconvert --execute --to notebook train.ipynb
+        run: jupyter nbconvert --execute --to notebook --ExecutePreprocessor.kernel_name=python3 train.ipynb
 
       - name: Validate model
-        run: jupyter nbconvert --execute --to notebook validate.ipynb
+        run: jupyter nbconvert --execute --to notebook --ExecutePreprocessor.kernel_name=python3 validate.ipynb
